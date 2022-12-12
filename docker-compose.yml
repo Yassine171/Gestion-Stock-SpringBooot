@@ -1,0 +1,26 @@
+version: "3"
+services:
+#  springboot-app:
+#    container_name: gestionstock-app
+#    image: gestionstock-app
+#    restart: always
+#    build: .
+#    ports:
+#      - 8081:8081
+#    depends_on:
+#      - "mysqldb"
+#    environment:
+#      MYSQL_HOST: mysqldb
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
+#      MYSQL_PORT: 3306
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    volumes:
+      -  ./DB:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: gestionstock
+      MYSQL_ROOT_PASSWORD: root

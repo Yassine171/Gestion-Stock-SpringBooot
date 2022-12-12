@@ -1,0 +1,64 @@
+package gestion_stock.gestionStockapp.controller.api;
+
+import gestion_stock.gestionStockapp.dto.CategorieDto;
+import gestion_stock.gestionStockapp.util.StaticRoot;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RequestMapping(StaticRoot.APP_ROOT + "/categories")
+@CrossOrigin(origins = "http://localhost:4200")
+public interface CategorieApi {
+
+    @PostMapping(value = StaticRoot.APP_ROOT + "/categories/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    //@ApiOperation(value = "Enregistrer une categorie (Ajouter / Modifier)", notes = "Cette méthode permet d'ajouter et de modifier une categorie", response = CategorieDto.class)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "L'objet categorie créé / modifié")
+    })
+    CategorieDto save(@RequestBody CategorieDto categorieDto);
+
+    @GetMapping(value = StaticRoot.APP_ROOT + "/categories/byid/{idCategorie}", produces = MediaType.APPLICATION_JSON_VALUE)
+  //  @ApiOperation(value = "Rechercher une categorie", notes = "Cette méthode permet de recherhcer une categorie par son ID ", response = CategorieDto.class)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode ="200" , description= "L'objet categorie est trouvé dans la BDD"),
+            @ApiResponse(responseCode = "404", description = "L'objet categorie n'est pas trouvé dans la BDD")
+    })
+    CategorieDto findById(@PathVariable("idCategorie") Integer id);
+
+    @GetMapping(value = StaticRoot.APP_ROOT + "/categories/bycode/{codeCategorie}", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@ApiOperation(value = "Rechercher une categorie avec son code", notes = "Cette méthode permet de rechercher une categorie par son code", response = CategorieDto.class)
+    @ApiResponses({
+            @ApiResponse(responseCode ="200" , description= "La categorie est trouvé dans la BDD"),
+            @ApiResponse(responseCode = "404", description = "La categorie n'est pas trouvé dans la BDD")
+    })
+        // [CAT1,CAT2,CAT3]
+    CategorieDto findByCode( @PathVariable("codeCategorie") String code);
+
+    @GetMapping(value = StaticRoot.APP_ROOT + "/responseCode = categories/bydesignation/{designation}", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@ApiOperation(value = "Rechercher une categorie avec sa designation", notes = "Cette méthode permet de rechercher une categorie par sa designation", response = CategorieDto.class)
+    @ApiResponses({
+            @ApiResponse(responseCode ="200" , description= "La catégorie est trouvé dans la BDD"),
+            @ApiResponse(responseCode = "404", description = "La catégorie n'est pas trouvé dans la BDD")
+    })
+    CategorieDto findByDesignation(@PathVariable("designation") String designation);
+
+    @GetMapping(value = StaticRoot.APP_ROOT + "/categories/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@ApiOperation(value = "Charger la liste des categories", notes = "Cette méthode permet de renvoyer la liste des categories", responseContainer = "List<CategorieDto>")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "L'objet categorie est trouvé dans la BDD"),
+            @ApiResponse(responseCode = "403", description = "Vous pouvez pas acceder a cette ressource  JWT"),
+            @ApiResponse(responseCode = "404", description = "L'objet categorie n'est pas trouvé dans la BDD")
+    })
+    List<CategorieDto> findAll();
+
+    @DeleteMapping(value = StaticRoot.APP_ROOT + "/categories/delete/{idCategorie}")
+    //@ApiOperation(value = "Supprimer une categorie", notes = "Cette méthode permet de supprimer une categorie par son ID ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "L'objet categorie est supprimé de la BDD"),
+            @ApiResponse(responseCode = "404", description = "L'objet categorie n'est pas supprimé de la BDD")
+    })
+    void delete(@PathVariable("idCategorie") Integer id);
+}
